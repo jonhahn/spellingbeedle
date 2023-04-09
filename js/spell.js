@@ -52,7 +52,7 @@ var words = [word1, word2, word3, word4, word5]
 
 check = function(num){
     num_str = (num + 1).toString()
-    guess = document.getElementById("enter" + num_str).value;
+    guess = document.getElementById("enter" + num_str).value.toLowerCase();
 
     // Make sure pronunciation has been heard and guess is entered
     if ((os[num] == 0) & (guess != "") & ps[num] == 1){
