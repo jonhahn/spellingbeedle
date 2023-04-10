@@ -99,9 +99,19 @@ timetomidnight = function(){
     d2 = new Date(now_utc);
     var diff =  d1 - d2;
 
-    hours = Math.floor(diff/60/60/1000)
+    hours = Math.floor(diff/60/60/1000);
     minutes = Math.floor(diff/60/1000 - hours*60);
-    seconds = Math.floor(diff/1000 - hours*60*60 - minutes*60)
+    seconds = Math.floor(diff/1000 - hours*60*60 - minutes*60);
 
-    return hours.toString() + ":" + minutes.toString() + ":" + seconds.toString()
+    minstring = minutes.toString();
+    if (minutes < 10){
+        minstring = "0" + minstring;
+    };
+
+    secstring = seconds.toString();
+    if (seconds < 10){
+        secstring = "0" + secstring;
+    };
+
+    return hours.toString() + ":" + minstring + ":" + secstring;
 }
