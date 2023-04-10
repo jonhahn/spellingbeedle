@@ -82,6 +82,26 @@ finish = function(){
     pct = ['0%', '20%', '40%', '60%', '80%', '100%'];
 
     total = rs[0] + rs[1] + rs[2] + rs[3] + rs[4];
-    $("#result").html("<h3>" + success[total] + "</h3><h3>" + pct[total] + "</h3>");
+    time = timetomidnight();
+    $("#result").html("<h3>" + success[total] + "</h3><h3>" + pct[total] + "</h3><h5>Next spellingbeedle in: " + time + "<h5>");
+    $("#result").show();
+}
 
+timetomidnight = function(){
+    var date = new Date();
+    var now_utc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
+                    date.getUTCDate(), date.getUTCHours(),
+                    date.getUTCMinutes(), date.getUTCSeconds());
+    var now_utc2 = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
+                    date.getUTCDate(), 24,
+                    0, 0);
+    d1 = new Date(now_utc2);
+    d2 = new Date(now_utc);
+    var diff =  d1 - d2;
+
+    hours = Math.floor(diff/60/60/1000)
+    minutes = Math.floor(diff/60/1000 - hours*60);
+    seconds = Math.floor(diff/1000 - hours*60*60 - minutes*60)
+
+    return hours.toString() + ":" + minutes.toString() + ":" + seconds.toString()
 }
