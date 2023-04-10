@@ -42,12 +42,11 @@ $("#form5").submit(function() {
 var os = [0,0,0,0,0]
 var rs = [0,0,0,0,0]
 
-var word1 = "abbots";
-var word2 = "purring";
-var word3 = "monsieur";
-var word4 = "reticuloendothelial";
-var word5 = "lysimachia";
-var words = [word1, word2, word3, word4, word5]
+var words = []
+$.getJSON("https://s3.amazonaws.com/test.bucket.hahn/fivewords.json", function(data){
+  words = data;
+  return;
+});
 
 
 check = function(num){
