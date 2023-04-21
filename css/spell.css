@@ -15,7 +15,20 @@ div {
 
 i {
   color: Dodgerblue;
+  opacity: .7;
+  padding-right: 7px;
+  padding-left: 6px;
+}
+
+j {
+  color: silver;
   opacity: .5;
+}
+
+.fa-xl {
+    font-size: 1.5em;
+    line-height: .04167em;
+    vertical-align: .05em;
 }
 
 o {
