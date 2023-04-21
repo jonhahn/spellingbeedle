@@ -70,30 +70,19 @@ o {
 .popup {
     position:absolute;
     display:none;
-    top:0px;
-    left:50%;
+
+    z-index: 2;
+    top: 0%;
+    left: 0%;
+
     width:220px;
     min-height:58px;
-    margin-left:-105px;
+    margin-left: 20px;
+    margin-top: 35px;
+
     background-color:#eee;
     border: 2px solid #888;
-    z-index:2;
     padding:5px;
-}
-#popup5 {
-    margin-top:364px;
-}
-#popup1 {
-    margin-top:132px;
-}
-#popup2 {
-    margin-top:190px;
-}
-#popup3 {
-    margin-top:248px;
-}
-#popup4 {
-    margin-top:306px;
 }
 
 
@@ -106,3 +95,9 @@ o {
    right: 5px; /*newly added*/
    top: 20px;/*newly added*/
 }
+
+
+.popWrap {
+   position: relative;
+   display: hidden;
+ }
