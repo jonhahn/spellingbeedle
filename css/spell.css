@@ -60,3 +60,43 @@ o {
     border: 1px solid black;
     display: none;
 }
+
+
+.popup {
+    position:absolute;
+    display:none;
+    top:0px;
+    left:50%;
+    width:220px;
+    height:186px;
+    margin-left:-105px;
+    background-color:#ddd;
+    z-index:2;
+    padding:5px;
+}
+#popup5 {
+    margin-top:364px;
+}
+#popup1 {
+    margin-top:132px;
+}
+#popup2 {
+    margin-top:190px;
+}
+#popup3 {
+    margin-top:248px;
+}
+#popup4 {
+    margin-top:306px;
+}
+
+
+.close-image {
+   cursor: pointer;
+   display: block;
+   float: right;
+   z-index: 3;
+   position: absolute; /*newly added*/
+   right: 5px; /*newly added*/
+   top: 20px;/*newly added*/
+}

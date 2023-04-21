@@ -1,31 +1,49 @@
 
+// Which buttons have been clicked
 ps = [0,0,0,0,0]
 
+// Variable of which button was clicked last
 let a = 0;
 
+//Play Buttons
 play = function(i){
         document.getElementsByTagName("i")[a].style.opacity=".7";
         document.getElementsByTagName("audio")[i].play();
         document.getElementsByTagName("i")[i].style.opacity="1";
+        if (a != i){
+            $("#popup" + (a+1).toString()).hide();
+        };
         a = i;
         $("#enter" + (i+1).toString()).focus();
         ps[i] = 1;
 };
-
 for (let i = 0; i < 5; i++) {
     document.getElementsByTagName("i")[i].addEventListener("click", function(){
         play(i);
     });
 }
 
+//X Buttons
+close = function(i){
+        $("#popup" + (a+1).toString()).hide();
+};
+for (let i = 0; i < 5; i++) {
+    document.getElementsByTagName("ii")[i].addEventListener("click", function(){
+        close(i);
+    });
+}
+
+// Info Buttons
 info = function(i){
         document.getElementsByTagName("i")[a].style.opacity=".7";
         document.getElementsByTagName("i")[i].style.opacity="1";
+        $("#popup" + (a+1).toString()).hide();
         a = i;
         $("#enter" + (i+1).toString()).focus();
         ps[i] = 1;
-};
+        $("#popup" + (i+1).toString()).show();
 
+};
 for (let i = 0; i < 5; i++) {
     document.getElementsByTagName("j")[i].addEventListener("click", function(){
         info(i);
@@ -69,6 +87,7 @@ check = function(num){
 
     // Make sure pronunciation has been heard and guess is entered
     if ((os[num] == 0) & (guess != "") & ps[num] == 1){
+        $("#popup" + (a+1).toString()).hide();
         os[num] = 1
         $("#enter" + num_str).prop('disabled', true);
         if (guess == words[num]){
@@ -81,6 +100,9 @@ check = function(num){
         }
     } else{
         play(num);
+        if (a != num){
+            $("#popup" + (a+1).toString()).hide();
+        };
     }
 
     if (Math.min(...os) == 1){
