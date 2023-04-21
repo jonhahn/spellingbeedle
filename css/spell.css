@@ -25,6 +25,11 @@ j {
   opacity: .5;
 }
 
+ii {
+  color: #888;
+  opacity: 1;
+}
+
 .fa-xl {
     font-size: 1.5em;
     line-height: .04167em;
@@ -57,7 +62,7 @@ o {
 }
 
 #result {
-    border: 1px solid black;
+    border: 2px solid #888;
     display: none;
 }
 
@@ -68,9 +73,10 @@ o {
     top:0px;
     left:50%;
     width:220px;
-    height:186px;
+    min-height:58px;
     margin-left:-105px;
-    background-color:#ddd;
+    background-color:#eee;
+    border: 2px solid #888;
     z-index:2;
     padding:5px;
 }

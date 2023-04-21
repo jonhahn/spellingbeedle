@@ -76,9 +76,19 @@ var rs = [0,0,0,0,0]
 
 var words = []
 $.getJSON("https://s3.amazonaws.com/test.bucket.hahn/fivewords.json", function(data){
-  words = data;
+  words = data
   return;
 });
+
+var wordinfo = {}
+$.getJSON("https://s3.amazonaws.com/test.bucket.hahn/pron.json", function(data){
+  wordinfo = data
+  for (let i = 0; i < 5; i++) {
+    $("#pron" + (i+1).toString()).html("<p>" + wordinfo[i]['pronunciation'] +"</p><p>" + wordinfo[i]['definition']  + "</p>")
+  }
+  return;
+});
+
 
 
 check = function(num){
