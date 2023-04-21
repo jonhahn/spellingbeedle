@@ -65,6 +65,7 @@ o {
 #result {
     border: 2px solid #888;
     display: none;
+    background-color: #eee
 }
 
 
@@ -98,5 +99,5 @@ o {
 
 .popWrap {
    position: relative;
-   display: hidden;
+   display: inline;
  }

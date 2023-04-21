@@ -154,7 +154,9 @@ finish = function(){
 
     time = timetomidnight();
 
-    $("#result").html("<h5 style='color:" +color+ "'>" + response + "</h5><h3>" + pct[total] + "</h3><h5>Next spellingbeedle in: " + time + "<h5>");
+    $("#resultword").css("color", color);
+    $("#resultword").html(response);
+    $("#resultpct").html(pct[total]);
     $("#result").show();
 }
 
@@ -186,3 +188,12 @@ timetomidnight = function(){
 
     return hours.toString() + ":" + minstring + ":" + secstring;
 }
+
+
+function doDate()
+{
+    time = timetomidnight();
+    $("#timing").html(time);
+}
+
+setInterval(doDate, 1000);
