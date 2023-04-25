@@ -75,13 +75,14 @@ var os = [0,0,0,0,0]
 var rs = [0,0,0,0,0]
 
 var words = []
-$.getJSON("https://s3.amazonaws.com/test.bucket.hahn/fivewords.json", function(data){
+N = getDay();
+$.getJSON("https://s3.amazonaws.com/test.bucket.hahn/"+N+"/"+N+"_fivewords.json", function(data){
   words = data
   return;
 });
 
 var wordinfo = {}
-$.getJSON("https://s3.amazonaws.com/test.bucket.hahn/pron.json", function(data){
+$.getJSON("https://s3.amazonaws.com/test.bucket.hahn/"+N+"/"+N+"_pron.json", function(data){
   wordinfo = data
   for (let i = 0; i < 5; i++) {
     $("#pron" + (i+1).toString()).html("<p>" + wordinfo[i]['pronunciation'] +"</p><p>" + wordinfo[i]['definition']  + "</p>")
@@ -196,4 +197,32 @@ function doDate()
     $("#timing").html(time);
 }
 
+function setAudio(){
+    for (let i = 0; i < 5; i++){
+        num = (i+1).toString();
+        N = getDay();
+        $("#audio"+num).html('<source src="https://s3.amazonaws.com/test.bucket.hahn/'+N+'/'+N+'_'+num+'.mp3" type="audio/mp3">');
+    }
+}
+
 setInterval(doDate, 1000);
+
+
+function getDay(){
+    var date = new Date();
+    var now_utc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
+                    date.getUTCDate(), date.getUTCHours(),
+                    date.getUTCMinutes(), date.getUTCSeconds());
+    var now_utc2 = Date.UTC(2023, 3,
+                    8, 0,
+                    0, 0);
+    d1 = new Date(now_utc2);
+    d2 = new Date(now_utc);
+    var diff =  d2 - d1;
+
+    days = Math.floor(diff/24/60/60/1000);
+
+    return days.toString();
+}
+
+setAudio();
