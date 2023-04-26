@@ -1,7 +1,12 @@
 
+
 // Which buttons have been clicked
 var ps = [0,0,0,0,0]
+
+// Which ones have been guessed
 var os = [0,0,0,0,0]
+
+// Which have been guessed correct
 var rs = [0,0,0,0,0]
 
 // Variable of which button was clicked last
@@ -39,9 +44,34 @@ for (let i = 0; i < 5; i++){
 
 // Get Todays Words
 var words = []
+var stats_week = [0,0,0,0,0,0,0];
+var stats_all = [0,0];
+
 N = getDay();
 $.getJSON("https://s3.amazonaws.com/test.bucket.hahn/"+N+"/"+N+"_fivewords.json", function(data){
-  words = data
+    words = data;
+
+    stats_all[0] = Number(getCookie("spellingbeedle.alltime.correct"));
+    stats_all[1] = Number(getCookie("spellingbeedle.alltime.attempted"));
+
+    for (let i = 0; i < 7; i++) {
+        x = getCookie("spellingbeedle.day" + (i+1).toString());
+        if (x != null){
+            stats_week[i] = Number(x);
+        }
+    };
+
+    // Cookies
+    guesses = [null, null, null, null, null];
+    for (let i = 0; i < 5; i++) {
+        guesses[i] = getCookie("spellingbeedle.guess" + (i+1).toString())
+        if (guesses[i] != null){
+            ps[i] = 1;
+            $("#enter" + (i+1).toString()).val(guesses[i]);
+            check(i);
+        };
+    };
+
   return;
 });
 
@@ -59,3 +89,6 @@ setInterval(doDate, 1000);
 
 // Set audio files
 setAudio();
+
+
+

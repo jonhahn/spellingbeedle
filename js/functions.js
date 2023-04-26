@@ -29,13 +29,23 @@ close = function(i){
 
 check = function(num){
     num_str = (num + 1).toString()
-    guess = document.getElementById("enter" + num_str).value.toLowerCase();
+    if (guesses[num] != null){
+        guess = guesses[num].toLowerCase();
+    } else{
+        guess = document.getElementById("enter" + num_str).value.toLowerCase();
+    }
 
     // Make sure pronunciation has been heard and guess is entered
     if ((os[num] == 0) & (guess != "") & ps[num] == 1){
+
+        guesses[num] = document.getElementById("enter" + num_str).value;
+        setCookieUntil15("spellingbeedle.guess"+num_str, guesses[num]);
+
         $("#popup" + (a+1).toString()).hide();
         os[num] = 1
         $("#enter" + num_str).prop('disabled', true);
+        console.log(guess);
+        console.log(words[num]);
         if (guess == words[num]){
             $("#o" + num_str).html('<oo class="fa-solid fa-check-circle fa-2x correct"></oo>')
             rs[num] = 1
@@ -91,6 +101,16 @@ finish = function(){
     $("#resultword").html(response);
     $("#resultpct").html(pct[total]);
     $("#result").show();
+
+    // Cookies
+    if (getCookie("spellingbeedle.day" + (getDayNum()+1).toString()) == null){
+        stats_week[getDayNum()] = total;
+        stats_all[0] = stats_all[0] + total;
+        stats_all[1] = stats_all[1] + 5;
+        setCookieUntilEnd("spellingbeedle.day" + (getDayNum()+1).toString(), total);
+        setCookie("spellingbeedle.alltime.correct", stats_all[0], 365)
+        setCookie("spellingbeedle.alltime.attempted", stats_all[1], 365)
+    }
 };
 
 
@@ -163,7 +183,7 @@ function setCookie(name,value,days) {
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-}
+};
 function setCookieUntil15(name,value) {
     var expires = "";
     if (days) {
@@ -173,9 +193,19 @@ function setCookieUntil15(name,value) {
                     15, 0));
         expires = "; expires=" + date.toUTCString();
     }
-    me = name + "=" + (value || "")  + expires + "; path=/";
-    return me;
-}
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+};
+function setCookieUntilEnd(name,value) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
+                    date.getUTCDate() + (6-getDayNum()), 24,
+                    15, 0));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+};
 function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
@@ -185,7 +215,13 @@ function getCookie(name) {
         if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
     }
     return null;
-}
+};
 function eraseCookie(name) {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+};
+
+function getDayNum(){
+    var date = new Date();
+    var now = new Date(date.getTime() - (15*60*1000));
+    return now.getUTCDay();
 }
