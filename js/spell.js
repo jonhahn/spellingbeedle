@@ -12,6 +12,8 @@ var rs = [0,0,0,0,0]
 // Variable of which button was clicked last
 let a = 0;
 
+var stats_are_set = 0;
+
 //Play Buttons
 for (let i = 0; i < 5; i++) {
     document.getElementsByTagName("i")[i].addEventListener("click", function(){
@@ -93,4 +95,8 @@ setAudio();
 
 document.getElementsByTagName("ij")[0].addEventListener("click", function(){
         $("#popup-stats").hide();
+    });
+
+document.getElementById("chartbutton").addEventListener("click", function(){
+        setStats();
     });
