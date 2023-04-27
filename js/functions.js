@@ -44,8 +44,6 @@ check = function(num){
         $("#popup" + (a+1).toString()).hide();
         os[num] = 1
         $("#enter" + num_str).prop('disabled', true);
-        console.log(guess);
-        console.log(words[num]);
         if (guess == words[num]){
             $("#o" + num_str).html('<oo class="fa-solid fa-check-circle fa-2x correct"></oo>')
             rs[num] = 1
@@ -103,15 +101,91 @@ finish = function(){
     $("#result").show();
 
     // Cookies
-    if (getCookie("spellingbeedle.day" + (getDayNum()+1).toString()) == null){
+    console.log();
+    x = getCookie("spellingbeedle.day" + (getDayNum()+1).toString());
+
+    if (x == null | x == ''){
+
         stats_week[getDayNum()] = total;
         stats_all[0] = stats_all[0] + total;
         stats_all[1] = stats_all[1] + 5;
+
+        yesterday = Number(getCookie("spellingbeedle.yesterday"));
+
+        if ((yesterday > 0) & (total > 0)){
+            stats_all[2] = stats_all[2] + 1;
+        } else{
+            if (total > 0){
+                stats_all[2] = 1;
+            } else {
+                stats_all[2] = 0;
+            };
+        }
+
         setCookieUntilEnd("spellingbeedle.day" + (getDayNum()+1).toString(), total);
-        setCookie("spellingbeedle.alltime.correct", stats_all[0], 365)
-        setCookie("spellingbeedle.alltime.attempted", stats_all[1], 365)
+        setCookie("spellingbeedle.alltime.correct", stats_all[0], 365);
+        setCookie("spellingbeedle.alltime.attempted", stats_all[1], 365);
+
+        setCookie("spellingbeedle.streak", stats_all[2], 365);
+        setCookieUntilTomorrow("spellingbeedle.yesterday", total);
     }
+
+    setStats();
+
 };
+
+
+function setStats(){
+    $("#alltime").html((Math.round(stats_all[0]/stats_all[1] * 100)).toString() + "%");
+    $("#streak").html(stats_all[2])
+
+    const data = stats_week;
+    // Define chart dimensions
+    const width = 250;
+    const height = 100;
+    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+
+    // Create SVG element and set dimensions
+    const svg = d3.select("#thisweek")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    // Create scales
+    const xScale = d3.scaleBand()
+      .domain(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])
+      .range([margin.left, width - margin.right])
+      .padding(0.1);
+
+    const yScale = d3.scaleLinear()
+      .domain([0, 5])
+      .nice()
+      .range([height - margin.bottom, margin.top]);
+
+    // Create bars
+    svg.selectAll("rect")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("x", (d, i) => xScale(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][i]))
+      .attr("y", d => yScale(d))
+      .attr("width", xScale.bandwidth())
+      .attr("height", d => height - margin.bottom - yScale(d))
+      .attr("fill", "steelblue");
+
+    // Add axes
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisLeft(yScale).ticks(5, "s");
+
+    svg.append("g")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(xAxis);
+
+    svg.append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(yAxis);
+    $("#popup-stats").show();
+}
 
 
 function doDate()
@@ -134,11 +208,12 @@ timetomidnight = function(){
                     date.getUTCDate(), date.getUTCHours(),
                     date.getUTCMinutes(), date.getUTCSeconds());
     var now_utc2 = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
-                    date.getUTCDate(), 24,
-                    15, 0);
+                    date.getUTCDate() + 1, 0,
+                     0, 0);
     d1 = new Date(now_utc2);
     d2 = new Date(now_utc);
     var diff =  d1 - d2;
+
 
     hours = Math.floor(diff/60/60/1000);
     minutes = Math.floor(diff/60/1000 - hours*60);
@@ -153,7 +228,6 @@ timetomidnight = function(){
     if (seconds < 10){
         secstring = "0" + secstring;
     };
-
     return hours.toString() + ":" + minstring + ":" + secstring;
 }
 
@@ -169,7 +243,6 @@ function getDay(){
     d2 = new Date(now_utc);
     var diff =  d2 - d1;
     days = Math.floor(diff/24/60/60/1000);
-
     return days.toString();
 };
 
@@ -184,28 +257,45 @@ function setCookie(name,value,days) {
     }
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
 };
+
 function setCookieUntil15(name,value) {
     var expires = "";
     if (days) {
         var date = new Date();
         date.setTime(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
-                    date.getUTCDate(), 24,
-                    15, 0));
+                    date.getUTCDate() + 1, 0,
+                    0, 0));
         expires = "; expires=" + date.toUTCString();
     }
+    m = name + "=" + (value || "")  + expires + "; path=/";
+    console.log(m)
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
 };
+
 function setCookieUntilEnd(name,value) {
     var expires = "";
     if (days) {
         var date = new Date();
         date.setTime(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
-                    date.getUTCDate() + (6-getDayNum()), 24,
-                    15, 0));
+                    date.getUTCDate() + (7-getDayNum()), 0,
+                    0, 0));
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
 };
+
+function setCookieUntilTomorrow(name,value) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
+                    date.getUTCDate() + 2, 0,
+                    0, 0));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+};
+
 function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');

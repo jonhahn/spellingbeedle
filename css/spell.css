@@ -101,3 +101,21 @@ o {
    position: relative;
    display: inline;
  }
+
+#popup-stats {
+    border: 2px solid #888;
+    display: none;
+    min-height:200px;
+    background-color:#fff;
+    padding:10px;
+    margin-top:10px;
+}
+
+.close-image2 {
+   cursor: pointer;
+   display: block;
+   float: right;
+   z-index: 3;
+   left: 48%; /*newly added*/
+   top: 5px;/*newly added*/
+}

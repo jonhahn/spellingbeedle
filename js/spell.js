@@ -53,6 +53,7 @@ $.getJSON("https://s3.amazonaws.com/test.bucket.hahn/"+N+"/"+N+"_fivewords.json"
 
     stats_all[0] = Number(getCookie("spellingbeedle.alltime.correct"));
     stats_all[1] = Number(getCookie("spellingbeedle.alltime.attempted"));
+    stats_all[2] = Number(getCookie("spellingbeedle.streak"));
 
     for (let i = 0; i < 7; i++) {
         x = getCookie("spellingbeedle.day" + (i+1).toString());
@@ -65,7 +66,7 @@ $.getJSON("https://s3.amazonaws.com/test.bucket.hahn/"+N+"/"+N+"_fivewords.json"
     guesses = [null, null, null, null, null];
     for (let i = 0; i < 5; i++) {
         guesses[i] = getCookie("spellingbeedle.guess" + (i+1).toString())
-        if (guesses[i] != null){
+        if ((guesses[i] != null) & (guesses[i] != '')){
             ps[i] = 1;
             $("#enter" + (i+1).toString()).val(guesses[i]);
             check(i);
@@ -90,5 +91,13 @@ setInterval(doDate, 1000);
 // Set audio files
 setAudio();
 
+document.getElementsByTagName("ij")[0].addEventListener("click", function(){
+        $("#popup-stats").hide();
+    });
 
-
+eraseCookie("spellingbeedle.guess1");
+eraseCookie("spellingbeedle.guess2");
+eraseCookie("spellingbeedle.guess3");
+eraseCookie("spellingbeedle.guess4");
+eraseCookie("spellingbeedle.guess5");
+eraseCookie("spellingbeedle.day5");
