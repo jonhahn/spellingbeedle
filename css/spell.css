@@ -45,6 +45,8 @@ o {
 .title {
   font-family: Arial;
   font-weight: bold;
+  font-size: 18pt;
+  margin-left:40px;
 }
 
 .correct {
@@ -118,4 +120,15 @@ o {
    z-index: 3;
    left: 48%; /*newly added*/
    top: 5px;/*newly added*/
+}
+
+#chartbutton1 {
+    color: gray;
+    padding-right: 10px;
+    padding-left: 0px;
+}
+
+#chartbutton {
+    color: gray;
+    padding-left: 50px;
 }

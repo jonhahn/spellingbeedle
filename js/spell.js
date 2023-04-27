@@ -94,10 +94,3 @@ setAudio();
 document.getElementsByTagName("ij")[0].addEventListener("click", function(){
         $("#popup-stats").hide();
     });
-
-eraseCookie("spellingbeedle.guess1");
-eraseCookie("spellingbeedle.guess2");
-eraseCookie("spellingbeedle.guess3");
-eraseCookie("spellingbeedle.guess4");
-eraseCookie("spellingbeedle.guess5");
-eraseCookie("spellingbeedle.day5");
