@@ -136,57 +136,59 @@ finish = function(){
 
 
 function setStats(){
-    $("#alltime").html((Math.round(stats_all[0]/stats_all[1] * 100)).toString() + "%");
+    if (stats_all[1] > 0){
+        $("#alltime").html((Math.round(stats_all[0]/stats_all[1] * 100)).toString() + "%");
+    }
     $("#streak").html(stats_all[2])
 
-    if (stats_are_set == 0){
-        const data = stats_week;
-        // Define chart dimensions
-        const width = 250;
-        const height = 100;
-        const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+    $("#thisweek").html("")
+    const data = stats_week;
+    // Define chart dimensions
+    const width = 250;
+    const height = 100;
+    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
 
-        // Create SVG element and set dimensions
-        const svg = d3.select("#thisweek")
-          .append("svg")
-          .attr("width", width)
-          .attr("height", height);
+    // Create SVG element and set dimensions
+    const svg = d3.select("#thisweek")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
 
-        // Create scales
-        const xScale = d3.scaleBand()
-          .domain(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])
-          .range([margin.left, width - margin.right])
-          .padding(0.1);
+    // Create scales
+    const xScale = d3.scaleBand()
+      .domain(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])
+      .range([margin.left, width - margin.right])
+      .padding(0.1);
 
-        const yScale = d3.scaleLinear()
-          .domain([0, 5])
-          .nice()
-          .range([height - margin.bottom, margin.top]);
+    const yScale = d3.scaleLinear()
+      .domain([0, 5])
+      .nice()
+      .range([height - margin.bottom, margin.top]);
 
-        // Create bars
-        svg.selectAll("rect")
-          .data(data)
-          .enter()
-          .append("rect")
-          .attr("x", (d, i) => xScale(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][i]))
-          .attr("y", d => yScale(d))
-          .attr("width", xScale.bandwidth())
-          .attr("height", d => height - margin.bottom - yScale(d))
-          .attr("fill", "steelblue");
+    // Create bars
+    svg.selectAll("rect")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("x", (d, i) => xScale(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][i]))
+      .attr("y", d => yScale(d))
+      .attr("width", xScale.bandwidth())
+      .attr("height", d => height - margin.bottom - yScale(d))
+      .attr("fill", "steelblue");
 
-        // Add axes
-        const xAxis = d3.axisBottom(xScale);
-        const yAxis = d3.axisLeft(yScale).ticks(5, "s");
+    // Add axes
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisLeft(yScale).ticks(5, "s");
 
-        svg.append("g")
-          .attr("transform", `translate(0,${height - margin.bottom})`)
-          .call(xAxis);
+    svg.append("g")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(xAxis);
 
-        svg.append("g")
-          .attr("transform", `translate(${margin.left},0)`)
-          .call(yAxis);
+    svg.append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(yAxis);
 
-    }
+
     $("#popup-stats").show();
     stats_are_set = 1;
 }
