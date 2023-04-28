@@ -244,7 +244,7 @@ function getDay(){
                     date.getUTCMinutes(), date.getUTCSeconds());
     var now_utc2 = Date.UTC(2023, 3,
                     8, 0,
-                    15, 0);
+                    0, 0);
     d1 = new Date(now_utc2);
     d2 = new Date(now_utc);
     var diff =  d2 - d1;
