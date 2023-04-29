@@ -93,10 +93,24 @@ setInterval(doDate, 1000);
 // Set audio files
 setAudio();
 
+
+// Some other buttons
 document.getElementsByTagName("ij")[0].addEventListener("click", function(){
         $("#popup-stats").hide();
     });
 
 document.getElementById("chartbutton").addEventListener("click", function(){
-        setStats();
+        if ($("#popup-stats").is(":visible")){
+            $("#popup-stats").hide();
+        } else{
+            setStats();
+        }
+    });
+
+document.getElementById("chartbutton1").addEventListener("click", function(){
+        $("#popup-question").toggle();
+    });
+
+document.getElementById("close-question").addEventListener("click", function(){
+        $("#popup-question").hide();
     });
