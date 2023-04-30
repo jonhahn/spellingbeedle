@@ -39,7 +39,7 @@ check = function(num){
     if ((os[num] == 0) & (guess != "") & ps[num] == 1){
 
         guesses[num] = document.getElementById("enter" + num_str).value;
-        setCookieUntil15("spellingbeedle.guess"+num_str, guesses[num]);
+        setCookieForToday("spellingbeedle.guess"+num_str, guesses[num]);
 
         $("#popup" + (a+1).toString()).hide();
         os[num] = 1
@@ -98,7 +98,6 @@ finish = function(){
     $("#result").show();
 
     // Cookies
-    console.log();
     x = getCookie("spellingbeedle.day" + (getDayNum()+1).toString());
 
     if (x == null | x == ''){
@@ -119,7 +118,7 @@ finish = function(){
             };
         }
 
-        setCookieUntilEnd("spellingbeedle.day" + (getDayNum()+1).toString(), total);
+        setCookieUntilEndOfWeek("spellingbeedle.day" + (getDayNum()+1).toString(), total);
         setCookie("spellingbeedle.alltime.correct", stats_all[0], 365);
         setCookie("spellingbeedle.alltime.attempted", stats_all[1], 365);
 
@@ -207,16 +206,13 @@ function setAudio(){
 
 timetomidnight = function(){
     var date = new Date();
-    var now_utc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
-                    date.getUTCDate(), date.getUTCHours(),
-                    date.getUTCMinutes(), date.getUTCSeconds());
-    var now_utc2 = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
-                    date.getUTCDate() + 1, 0,
-                     0, 0);
+    var now_utc = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+                           date.getHours(), date.getMinutes(), date.getSeconds());
+    var now_utc2 = new Date(date.getUTCFullYear(), date.getMonth(), date.getDate() + 1,
+                            0, 0, 0);
     d1 = new Date(now_utc2);
     d2 = new Date(now_utc);
     var diff =  d1 - d2;
-
 
     hours = Math.floor(diff/60/60/1000);
     minutes = Math.floor(diff/60/1000 - hours*60);
@@ -236,12 +232,10 @@ timetomidnight = function(){
 
 function getDay(){
     var date = new Date();
-    var now_utc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
-                    date.getUTCDate(), date.getUTCHours(),
-                    date.getUTCMinutes(), date.getUTCSeconds());
-    var now_utc2 = Date.UTC(2023, 3,
-                    8, 0,
-                    0, 0);
+    var now_utc = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+                           date.getHours(), date.getMinutes(), date.getSeconds());
+    var now_utc2 = new Date(2023, 3, 8,
+                            0, 0, 0);
     d1 = new Date(now_utc2);
     d2 = new Date(now_utc);
     var diff =  d2 - d1;
@@ -261,27 +255,25 @@ function setCookie(name,value,days) {
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
 };
 
-function setCookieUntil15(name,value) {
+function setCookieForToday(name,value) {
     var expires = "";
     if (days) {
         var date = new Date();
-        date.setTime(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
-                    date.getUTCDate() + 1, 0,
-                    0, 0));
+        date.setDate(date.getDate() + 1);
+        date.setTime(new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+                              0, 0, 0));
         expires = "; expires=" + date.toUTCString();
     }
-    m = name + "=" + (value || "")  + expires + "; path=/";
-    console.log(m)
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
 };
 
-function setCookieUntilEnd(name,value) {
+function setCookieUntilEndOfWeek(name,value) {
     var expires = "";
     if (days) {
         var date = new Date();
-        date.setTime(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
-                    date.getUTCDate() + (7-getDayNum()), 0,
-                    0, 0));
+        date.setDate(date.getDate() + 7-getDayNum());
+        date.setTime(new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+                              0, 0, 0));
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
@@ -291,9 +283,9 @@ function setCookieUntilTomorrow(name,value) {
     var expires = "";
     if (days) {
         var date = new Date();
-        date.setTime(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
-                    date.getUTCDate() + 2, 0,
-                    0, 0));
+        date.setDate(date.getDate() + 2);
+        date.setTime(new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+                              0, 0, 0));
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
@@ -309,12 +301,13 @@ function getCookie(name) {
     }
     return null;
 };
+
 function eraseCookie(name) {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };
 
 function getDayNum(){
     var date = new Date();
-    var now = new Date(date.getTime() - (15*60*1000));
-    return now.getUTCDay();
+    var now = new Date(date.getTime());
+    return date.getDay();
 }
