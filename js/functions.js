@@ -30,9 +30,9 @@ close = function(i){
 check = function(num){
     num_str = (num + 1).toString()
     if (guesses[num] != null){
-        guess = guesses[num].toLowerCase();
+        guess = guesses[num].toLowerCase().trim();
     } else{
-        guess = document.getElementById("enter" + num_str).value.toLowerCase();
+        guess = document.getElementById("enter" + num_str).value.toLowerCase().trim();
     }
 
     // Make sure pronunciation has been heard and guess is entered
